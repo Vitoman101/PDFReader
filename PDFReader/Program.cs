@@ -14,8 +14,8 @@ namespace PDFReader
         {
 
             Reader test = new Reader();
-            string lokacijaStari = @"C:\Users\Viktor\Desktop\Viktor\pdfovi\stara godina\CS101-L01.pdf";
-            string lokacijaNovi = @"C:\Users\Viktor\Desktop\Viktor\pdfovi\ova godina\CS101-L01.pdf";
+            string lokacijaStari = @"C:\Users\Viktor\Desktop\Viktor\pdfovi\stara godina\stari.pdf";
+            string lokacijaNovi = @"C:\Users\Viktor\Desktop\Viktor\pdfovi\ova godina\novi.pdf";
             //string stariPDF = test.ReadPDF(lokacijaStari);
             //string noviPDF = test.ReadPDF(lokacijaNovi);
 
@@ -46,29 +46,47 @@ namespace PDFReader
             var watch = System.Diagnostics.Stopwatch.StartNew();
             // the code that you want to measure comes here
   
+          
+
             var nova = test.uniqueWords(lokacijaNovi);
+            Console.WriteLine("Ucitana nova...");
+             
+
+            //za testiranje
+            //Console.ReadLine(); return;
+
+            
             var stara = test.uniqueWords(lokacijaStari);
+            Console.WriteLine("Ucitana stara...");
 
-            nova = removeTopN(nova,10);
-            stara = removeTopN(stara, 10);
-
-
+            //brise prvih 10 reci koje se najvie ponavljaju, a da su krace od 5 slova
+            nova = removeTopN(nova,10,15);
+            stara = removeTopN(stara,10,15);
+            Console.WriteLine("Brisanje prvih reci...");
+            
             var distance = LevenshteinDistance.distanceMeasure(nova, stara);
             Console.WriteLine((1-distance)*100);
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine("Time: " + elapsedMs / 1000.0);
+            //Debug.WriteLine((1 - distance) * 100);
             Console.ReadLine();
         }
 
-        public  static Dictionary<String,int> removeTopN(Dictionary<string,int> dict, int n)
+        public  static Dictionary<String,int> removeTopN(Dictionary<string,int> dict, int n,int size)
         {
             var ordered = dict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
             List<string> toRemove = new List<string>();
             int i = 0;
             foreach (var kvp in ordered)
             {
-                toRemove.Add(kvp.Key);
+                if(kvp.Key.Length < size)
+                {
+                    toRemove.Add(kvp.Key);
+                    //Console.WriteLine(kvp.Key + " " + kvp.Value);
+                }
+              
+      
                 if (i == n)
                 {
                     break;

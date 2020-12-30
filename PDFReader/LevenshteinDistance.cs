@@ -96,13 +96,13 @@ namespace PDFReader
                 bool druga = D2.ContainsKey(n);
                 if (prva && druga)
                 {
-                    Debug.WriteLine(n);
+                    //Debug.WriteLine(n);
                     V1.Add(D1[n]);
                     V2.Add(D2[n]);
                 }
                 else if(prva)
                 {
-                    //Debug.WriteLine(n);
+                    Debug.WriteLine(n);
                     V1.Add(D1[n]);
                     V2.Add(0);
                 }
