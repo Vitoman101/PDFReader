@@ -84,8 +84,48 @@ namespace PDFReader
             return dot / (Math.Sqrt(mag1) * Math.Sqrt(mag2));
         }
 
+        public static double getManhattanDistance(List<double> V1, List<double> V2)
+        {
+            int N = 0;
+            N = ((V2.Count < V1.Count) ? V2.Count : V1.Count);
+            double dot = 0.0d;
+            double mag1 = 0.0d;
+    
+            for (int n = 0; n < N; n++)
+            {
+                dot += Math.Abs(V1[n] - V2[n]);
+                // Console.WriteLine(Math.Abs(V1[n] - V2[n]));
+                 mag1 += Math.Max(V1[n], V2[n]);
+                //mag1 += V1[n] + V2[n];
+                // Console.WriteLine(Math.Max(V1[n], V2[n]));
+
+            }
+           
+            return 1 - dot / mag1;
+        }
+
+
+        public static double getEuclidanDistance(List<double> V1, List<double> V2)
+        {
+            int N = 0;
+            N = ((V2.Count < V1.Count) ? V2.Count : V1.Count);
+            double dot = 0.0d;
+            double mag1 = 0.0d;
+
+            for (int n = 0; n < N; n++)
+            {
+                dot += Math.Pow(Math.Abs(V1[n] - V2[n]),2);
+                // Console.WriteLine(Math.Abs(V1[n] - V2[n]));
+                mag1 += Math.Pow(Math.Max(V1[n], V2[n]), 2);
+                // Console.WriteLine(Math.Max(V1[n], V2[n]));
+
+            }
+
+            return 1 - Math.Sqrt(dot) / Math.Sqrt(mag1);
+        }
+
         //MRKELA OVDE
-        public static double distanceMeasure(Dictionary<string, int> D1, Dictionary<string, int> D2)
+        public static double distanceMeasure(Dictionary<string, int> D1, Dictionary<string, int> D2,int algoritam)
         {
             List<double> V1 = new List<double>();
             List<double> V2 = new List<double>();
@@ -102,7 +142,7 @@ namespace PDFReader
                 }
                 else if(prva)
                 {
-                    Debug.WriteLine(n);
+                   // Debug.WriteLine(n);
                     V1.Add(D1[n]);
                     V2.Add(0);
                 }
@@ -112,11 +152,20 @@ namespace PDFReader
                     V1.Add(0);
                     V2.Add(D2[n]);
                 }
+                
             }
 
-
-
-            return GetCosineSimilarity(V1, V2);
+            
+            if(algoritam == 1)
+            {
+                return GetCosineSimilarity(V1, V2);
+            }
+            if(algoritam == 2)
+            {
+                return getManhattanDistance(V1, V2);
+            }
+            return 0;
+           
         }
     }
 }

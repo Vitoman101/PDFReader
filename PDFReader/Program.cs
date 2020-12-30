@@ -63,8 +63,11 @@ namespace PDFReader
             nova = removeTopN(nova,10,15);
             stara = removeTopN(stara,10,15);
             Console.WriteLine("Brisanje prvih reci...");
-            
-            var distance = LevenshteinDistance.distanceMeasure(nova, stara);
+
+            //TESTIRATI VIKTOR
+            //1 - cosine
+            //2 - manhattan
+            var distance = LevenshteinDistance.distanceMeasure(nova, stara,2);
             Console.WriteLine((1-distance)*100);
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
@@ -80,18 +83,20 @@ namespace PDFReader
             int i = 0;
             foreach (var kvp in ordered)
             {
-                if(kvp.Key.Length < size)
+
+                if (i == n)
+                {
+                    break;
+                }
+                i++;
+
+                if (kvp.Key.Length < size)
                 {
                     toRemove.Add(kvp.Key);
                     //Console.WriteLine(kvp.Key + " " + kvp.Value);
                 }
               
       
-                if (i == n)
-                {
-                    break;
-                }
-                i++;
             }
             foreach (var s in toRemove)
             {
