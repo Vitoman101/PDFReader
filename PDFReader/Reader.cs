@@ -3,6 +3,7 @@ using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -67,6 +68,27 @@ namespace PDFReader
 
             }
             return dict;
+        }
+
+        //ovo ce biti da poredi fajl po fajl metoda al nisam dovrsio
+        public static void getAllFilesInFolder(string path)
+        {
+            try
+            {
+                foreach (string f in Directory.GetFiles(path, "*.pdf"))
+                {
+                    Console.WriteLine(f);
+                }
+
+                foreach (string d in Directory.GetDirectories(path))
+                {
+                    getAllFilesInFolder(d);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
         }
     }
 }
