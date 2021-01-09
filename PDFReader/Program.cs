@@ -40,7 +40,7 @@ namespace PDFReader
 
 
             //MRKELA OVDE
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
             // the code that you want to measure comes here
 
 
@@ -57,8 +57,8 @@ namespace PDFReader
             Console.WriteLine("Ucitana stara...");
 
             //brise prvih 10 reci koje se najvie ponavljaju, a da su krace od 5 slova
-            nova = removeTopN(nova, 10, 15);
-            stara = removeTopN(stara, 10, 15);
+            nova = Reader.removeTopN(nova, 10, 15);
+            stara = Reader.removeTopN(stara, 10, 15);
             Console.WriteLine("Brisanje prvih reci...");
 
             //TESTIRATI VIKTOR
@@ -66,41 +66,14 @@ namespace PDFReader
             //2 - manhattan
             var distance = LevenshteinDistance.distanceMeasure(nova, stara, 2);
             Console.WriteLine((1 - distance) * 100);
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            Console.WriteLine("Time: " + elapsedMs / 1000.0);
+            distance = ((1 - distance) * 100);
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+            //Console.WriteLine("Time: " + elapsedMs / 1000.0);
             //Debug.WriteLine((1 - distance) * 100);
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
-        public static Dictionary<String, int> removeTopN(Dictionary<string, int> dict, int n, int size)
-        {
-            var ordered = dict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-            List<string> toRemove = new List<string>();
-            int i = 0;
-            foreach (var kvp in ordered)
-            {
-
-                if (i == n)
-                {
-                    break;
-                }
-                i++;
-
-                if (kvp.Key.Length < size)
-                {
-                    toRemove.Add(kvp.Key);
-                    //Console.WriteLine(kvp.Key + " " + kvp.Value);
-                }
-
-
-            }
-            foreach (var s in toRemove)
-            {
-                ordered.Remove(s);
-            }
-
-            return ordered;
-        }
+        
     }
 }

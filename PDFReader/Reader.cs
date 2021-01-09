@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PDFReader
 {
-    class Reader
+    public class Reader
     {
         
         public string ReadPDF(string pdfLocation)
@@ -31,7 +31,6 @@ namespace PDFReader
         //MRKELA OVDE
         public Dictionary<string,int> uniqueWords(string pdfLocation)
         {
-            long brReci = 0;
             Dictionary<string, int> dict = new Dictionary<string, int>();
             HashSet<string> hash = new HashSet<string>();
             var pdfDocument = new PdfDocument(new PdfReader(pdfLocation));
@@ -71,24 +70,51 @@ namespace PDFReader
         }
 
         //ovo ce biti da poredi fajl po fajl metoda al nisam dovrsio
-        public static void getAllFilesInFolder(string path)
+        public static List<string> getAllFilesInFolder(string path)
         {
+            List<string> paths = new List<string>();
             try
             {
                 foreach (string f in Directory.GetFiles(path, "*.pdf"))
                 {
-                    Console.WriteLine(f);
-                }
-
-                foreach (string d in Directory.GetDirectories(path))
-                {
-                    getAllFilesInFolder(d);
+                    paths.Add(f);
                 }
             }
             catch (System.Exception excpt)
             {
                 Console.WriteLine(excpt.Message);
             }
+
+            return paths;
+        }
+
+        public static Dictionary<String, int> removeTopN(Dictionary<string, int> dict, int n, int size)
+        {
+            var ordered = dict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            List<string> toRemove = new List<string>();
+            int i = 0;
+            foreach (var kvp in ordered)
+            {
+
+                if (i == n)
+                {
+                    break;
+                }
+                i++;
+
+                if (kvp.Key.Length < size)
+                {
+                    toRemove.Add(kvp.Key);
+                }
+
+
+            }
+            foreach (var s in toRemove)
+            {
+                ordered.Remove(s);
+            }
+
+            return ordered;
         }
     }
 }

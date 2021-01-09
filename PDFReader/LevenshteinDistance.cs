@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PDFReader
 {
-    static class LevenshteinDistance
+    public static class LevenshteinDistance
     {
         public static int Compute(string s, string t)
         {
